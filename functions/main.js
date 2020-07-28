@@ -18,6 +18,7 @@ jQuery(document).ready()
     let NationalityCityCodes = [];
     let SessionID;
     let Hotels = [];
+    let HotelsToDisplay = [];
     let HotelDetail = [];
     let Rooms = [];
     let CancellationPolicy = [];
@@ -41,7 +42,6 @@ jQuery(document).ready()
 
 
     // Variables
-    const hotelSearchForm = document.querySelector('#hotelSearchForm');
     const hotelSearchButton = document.querySelector('#hotelSearchBtn');
     const countryInput = document.querySelector('#countryInput');
     const cityInput = document.querySelector('#cityInput');
@@ -49,23 +49,19 @@ jQuery(document).ready()
     const checkOutInput = document.querySelector('#checkOutInput');
     const roomInput = document.querySelector('#roomInput');
     const nationalityInput = document.querySelector('#nationalityInput');
-    const adultInput = document.querySelector('#adultInput');
-    const childInput = document.querySelector('#childInput');
-    const numberOfNights = document.querySelector('#numberOfNights');
 
-    const formRoomGuest = document.querySelector('.form-wrap-guest');
+
+    const formRoomGuestDropDown = document.querySelector('#guest_dropdown');
+    const formRoomGuest = document.querySelector('#form_wrap_guest');
 
     // Hotel search Form
-    const hotel_search_section = document.querySelector('#hotel_search_section');
     const form_search_error = document.querySelector('#form_search_error');
     const nights = document.querySelector('#nights');
 
     // Hotel list
-    const hotelResultsSection = document.querySelector('#hotel_list_section');
     const hotelListCardGroup = document.querySelector('#hotel_list_card_group');
 
     // HotelDetail
-    const hotelDetailSection = document.querySelector('#hotel_detail_section');
     const hotelDetailMainWrap = document.querySelector('#hotel_detail_main_wrap');
 
 
@@ -81,8 +77,6 @@ jQuery(document).ready()
 
     const bookingResults = document.querySelector('#booking_results');
 
-    const paypalButtonContainer = document.querySelector('#payment_div_wrap');
-
         
     // Aoutocomplete Countries
     autocomplete(countryInput, countries);
@@ -90,17 +84,10 @@ jQuery(document).ready()
 
 
     // Onload
-    toSearchPage();
+    onPageLoad();
 
 
-
-    // test
-    // const testResponse = document.querySelector('#testResponse');
-
-
-
-
-function toSearchPage(){
+function onPageLoad(){
   // location.reload(true);
   jQuery('#hotel_search_section').show();
   jQuery('#hotel_list_section').hide();
@@ -110,11 +97,22 @@ function toSearchPage(){
   clearTimeout(sessionMonitor);
 }
 
-function toHotelListPage(){
-  jQuery('#hotel_search_section').hide();
+function toSearchPage(){
+  // location.reload(true);
+  jQuery('#hotel_search_section').show();
   jQuery('#hotel_list_section').show();
   jQuery('#hotel_detail_section').hide();
   jQuery('#booking_section').hide();
+  countryInput.focus();
+  clearTimeout(sessionMonitor);
+}
+
+function toHotelListPage(){
+  jQuery('#hotel_search_section').show();
+  jQuery('#hotel_list_section').show();
+  jQuery('#hotel_detail_section').hide();
+  jQuery('#booking_section').hide();
+  window.scrollTo(0,1100);
 }
 
 function toDetailsPage(){
@@ -140,6 +138,8 @@ function toBookingPage(){
   });
  
 }
+
+
 
 
 
@@ -260,121 +260,126 @@ checkOutInput.addEventListener('focus',()=>{
 
 
 
+function openGuestDropdown() {
+  if (roomInput.value > 0) {
+    formRoomGuestDropDown.className = 'dropleft open'
+  }
+}
+
+function closeGuestDropdown() {
+  formRoomGuestDropDown.className = 'dropleft collapse'
+}
+
+function openFormRoomGuest() {
+    formRoomGuest.innerHTML = '';
+    formRoomGuestDropDown.className = 'dropleft open'
+    let i;
+    for(i = 1; i <= roomInput.value; i++ ){
+       let wrapOne = document.createElement('div');
+       wrapOne.classList = 'wrap';
+
+       let formGroupRoom = document.createElement('div');
+       formGroupRoom.className = 'form-group';
+       let displayRoom = document.createElement('div');
+       displayRoom.innerHTML = `Room ${i}`;
+       displayRoom.className = 'displayRoom';
+
+       formGroupRoom.appendChild(displayRoom);
 
 
+       let formGroupAdult = document.createElement('div');
+       formGroupAdult.className = 'form-group';
+       let inputGroupAdult = document.createElement('div');
+       inputGroupAdult.className = 'input-field';
 
 
-    roomInput.addEventListener('change',(e)=>{
-       formRoomGuest.innerHTML = '';
-
-       let i;
-       for(i = 1; i <= roomInput.value; i++ ){
-          let wrapOne = document.createElement('div');
-          wrapOne.classList = 'wrap';
-
-          let formGroupRoom = document.createElement('div');
-          formGroupRoom.className = 'form-group';
-          let displayRoom = document.createElement('div');
-          displayRoom.innerHTML = `Room ${i}`;
-          displayRoom.className = 'displayRoom';
-
-          formGroupRoom.appendChild(displayRoom);
-
-
-          let formGroupAdult = document.createElement('div');
-          formGroupAdult.className = 'form-group';
-          let inputGroupAdult = document.createElement('div');
-          inputGroupAdult.className = 'input-field';
-
-
-          let selectInputAdult = document.createElement('select');
-          selectInputAdult.setAttribute('id', `adultInput${i}`);
-          let oPT;
-          for ( oPT = 0; oPT < 6; oPT++  ) {
-            let selectAdultOption = document.createElement('option');
-            selectAdultOption.setAttribute('value', oPT+1);
-            selectAdultOption.innerHTML = oPT+1;
-            selectInputAdult.appendChild(selectAdultOption);
-          }
-
-
-          let labelAdult = document.createElement('label');
-          labelAdult.setAttribute('for', `adultInput${i}`);
-          labelAdult.innerHTML = "Adult No";
-         
-          // inputGroupAdult.appendChild(inputAdult);
-          inputGroupAdult.appendChild(selectInputAdult);
-          inputGroupAdult.appendChild(labelAdult);
-          formGroupAdult.appendChild(inputGroupAdult);
-          
-          let formGroupChild = document.createElement('div');
-          formGroupChild.className = 'form-group';
-          let inputGroupChild  = document.createElement('div');
-          inputGroupChild.className = 'input-field';
-         
-
-          let selectInputChild = document.createElement('select');
-          selectInputChild.setAttribute('id', `childInput${i}`);
-          selectInputChild.setAttribute('onchange', `childNumberChanged(${i})`);
-          let cPT;
-          for ( cPT = 0; cPT < 5; cPT++  ) {
-            let selectChildOption = document.createElement('option');
-            selectChildOption.setAttribute('value', cPT);
-            selectChildOption.innerHTML = cPT;
-            selectInputChild.appendChild(selectChildOption);
-          }
-
-          let labelChild  = document.createElement('label');
-          labelChild.setAttribute('for', `childInput${i}`);
-          labelChild.innerHTML = "Child No";
-
-          let labelChildAge  = document.createElement('label');
-          labelChildAge.setAttribute('for', `childInput${i}`);
-          labelChildAge.setAttribute('id', `childAgeLableR${i}`);
-          labelChildAge.innerHTML = "Child Age";
-          labelChildAge.style.width = '8em';
-          labelChildAge.style.margin = '1em 0 0 8em';
-          labelChildAge.style.display = 'none';
-  
-       
-          // inputGroupChild.appendChild(inputChild);
-
-          let totalChildNum;
-          for (totalChildNum = 1; totalChildNum < 5; totalChildNum++){
-            let selectAge = document.createElement('select');
-            selectAge.setAttribute('id', `childAgeR${i}C${totalChildNum}`);
-            selectAge.setAttribute('required', 'true');
-            selectAge.className = 'mr-3';
-  
-            let childAgeArr;
-            for (childAgeArr = 0; childAgeArr < 18; childAgeArr++) {
-              let optionChildAge = document.createElement('option');
-              optionChildAge.setAttribute('value', `${childAgeArr}`);
-              optionChildAge.innerHTML = `${childAgeArr}`;
-              selectAge.appendChild(optionChildAge);
-            }
-
-            selectAge.style.width = '8em';
-            selectAge.style.margin = '1em 0 0 7em';
-            selectAge.style.display = 'none';
-            inputGroupChild.appendChild(selectAge);
-          }
-
-          inputGroupChild.appendChild(labelChildAge);
-          inputGroupChild.appendChild(selectInputChild);
-          inputGroupChild.appendChild(labelChild);
-
-          formGroupChild.appendChild(inputGroupChild);
-
-          wrapOne.appendChild(formGroupRoom);
-          wrapOne.appendChild(formGroupAdult);
-          wrapOne.appendChild(formGroupChild);
-
-          formRoomGuest.appendChild(wrapOne);
-
+       let selectInputAdult = document.createElement('select');
+       selectInputAdult.setAttribute('id', `adultInput${i}`);
+       let oPT;
+       for ( oPT = 0; oPT < 6; oPT++  ) {
+         let selectAdultOption = document.createElement('option');
+         selectAdultOption.setAttribute('value', oPT+1);
+         selectAdultOption.innerHTML = oPT+1;
+         selectInputAdult.appendChild(selectAdultOption);
        }
 
-    })
+
+       let labelAdult = document.createElement('label');
+       labelAdult.setAttribute('for', `adultInput${i}`);
+       labelAdult.innerHTML = "Adult No";
+      
+       // inputGroupAdult.appendChild(inputAdult);
+       inputGroupAdult.appendChild(selectInputAdult);
+       inputGroupAdult.appendChild(labelAdult);
+       formGroupAdult.appendChild(inputGroupAdult);
+       
+       let formGroupChild = document.createElement('div');
+       formGroupChild.className = 'form-group';
+       let inputGroupChild  = document.createElement('div');
+       inputGroupChild.className = 'input-field';
+      
+
+       let selectInputChild = document.createElement('select');
+       selectInputChild.setAttribute('id', `childInput${i}`);
+       selectInputChild.setAttribute('onchange', `childNumberChanged(${i})`);
+       let cPT;
+       for ( cPT = 0; cPT < 5; cPT++  ) {
+         let selectChildOption = document.createElement('option');
+         selectChildOption.setAttribute('value', cPT);
+         selectChildOption.innerHTML = cPT;
+         selectInputChild.appendChild(selectChildOption);
+       }
+
+       let labelChild  = document.createElement('label');
+       labelChild.setAttribute('for', `childInput${i}`);
+       labelChild.innerHTML = "Child No";
+
+       let labelChildAge  = document.createElement('label');
+       labelChildAge.setAttribute('for', `childInput${i}`);
+       labelChildAge.setAttribute('id', `childAgeLableR${i}`);
+       labelChildAge.innerHTML = "Child Age";
+       labelChildAge.style.width = '50%';
+       labelChildAge.style.margin = '1em 0 0 0em';
+       labelChildAge.style.display = 'none';
+
+    
+       // inputGroupChild.appendChild(inputChild);
+
+       let totalChildNum;
+       for (totalChildNum = 1; totalChildNum < 5; totalChildNum++){
+         let selectAge = document.createElement('select');
+         selectAge.setAttribute('id', `childAgeR${i}C${totalChildNum}`);
+         selectAge.setAttribute('required', 'true');
+         selectAge.className = 'mr-3';
+
+         let childAgeArr;
+         for (childAgeArr = 0; childAgeArr < 18; childAgeArr++) {
+           let optionChildAge = document.createElement('option');
+           optionChildAge.setAttribute('value', `${childAgeArr}`);
+           optionChildAge.innerHTML = `${childAgeArr}`;
+           selectAge.appendChild(optionChildAge);
+         }
+
+         selectAge.style.width = '50%';
+         selectAge.style.margin = '1em 0 0 0em';
+         selectAge.style.display = 'none';
+         inputGroupChild.appendChild(selectAge);
+       }
+
+       inputGroupChild.appendChild(labelChildAge);
+       inputGroupChild.appendChild(selectInputChild);
+       inputGroupChild.appendChild(labelChild);
+
+       formGroupChild.appendChild(inputGroupChild);
+
+       wrapOne.appendChild(formGroupRoom);
+       wrapOne.appendChild(formGroupAdult);
+       wrapOne.appendChild(formGroupChild);
+
+       formRoomGuest.appendChild(wrapOne);
+
+    }
+}
 
 
 
@@ -428,52 +433,52 @@ function childNumberChanged(R_id) {
 
 // Form Validation Section
 
-countryInput.addEventListener('focusout', ()=>{
-  cityInput.focus();
-});
+// countryInput.addEventListener('focusout', ()=>{
+//   cityInput.focus();
+// });
 
-cityInput.addEventListener('focusout', ()=>{
-  checkInInput.focus();
-});
-
-
-checkOutInput.addEventListener('focusout', ()=>{
-  nationalityInput.focus();
-});
+// cityInput.addEventListener('focusout', ()=>{
+//   checkInInput.focus();
+// });
 
 
-nationalityInput.addEventListener('focusout', ()=>{
-  roomInput.focus();
-});
+// checkOutInput.addEventListener('focusout', ()=>{
+//   nationalityInput.focus();
+// });
+
+
+// nationalityInput.addEventListener('focusout', ()=>{
+//   roomInput.focus();
+// });
 
 
 
-setInterval(()=>{
+// setInterval(()=>{
 
-  let myIn = new Date(`${checkInInput.value}`);
-  let myOut = new Date(`${checkOutInput.value}`);
-  let one_day=1000*60*60*24
+//   let myIn = new Date(`${checkInInput.value}`);
+//   let myOut = new Date(`${checkOutInput.value}`);
+//   let one_day=1000*60*60*24
 
-  myNight = Math.ceil((myOut.getTime()-myIn.getTime())/(one_day));
-  if ( Number(myNight) >= 1 ){
-    nights.innerHTML = `${myNight} <i class="fas fa-moon"></i>`;
-  }
+//   myNight = Math.ceil((myOut.getTime()-myIn.getTime())/(one_day));
+//   if ( Number(myNight) >= 1 ){
+//     nights.innerHTML = `${myNight} <i class="fas fa-moon"></i>`;
+//   }
 
-  if ( roomInput.value === '') {
-    roomInput.className = 'selectEmpty'
-  }
-  if ( roomInput.value !== '') {
-    roomInput.className = 'select'
-  }
+//   if ( roomInput.value === '') {
+//     roomInput.className = 'selectEmpty'
+//   }
+//   if ( roomInput.value !== '') {
+//     roomInput.className = 'select'
+//   }
 
-  if ( nationalityInput.value === '---') {
-    nationalityInput.className = 'selectEmpty'
-  }
-  if ( nationalityInput.value !== '---') {
-    nationalityInput.className = 'select'
-  }
+//   if ( nationalityInput.value === '---') {
+//     nationalityInput.className = 'selectEmpty'
+//   }
+//   if ( nationalityInput.value !== '---') {
+//     nationalityInput.className = 'select'
+//   }
 
-}, 700)
+// }, 700)
 
 
 
@@ -484,32 +489,38 @@ function searchFormValidation() {
   if ( countryInput.value === '') {
     form_search_error.innerHTML = 'Please Input Country';
     form_search_error.className = 'form-search-error';
-    setTimeout(()=>{form_search_error.innerHTML = ''; form_search_error.className = ''; countryInput.focus();}, 2000);
+    countryInput.parentElement.className = 'input-field error';
+    setTimeout(()=>{form_search_error.innerHTML = ''; form_search_error.className = ''; countryInput.focus();  countryInput.parentElement.className = 'input-field'}, 2000);
   }
   else if ( cityInput.value === '') {
     form_search_error.innerHTML = 'Please Input City';
     form_search_error.className = 'form-search-error'
-    setTimeout(()=>{form_search_error.innerHTML = ''; form_search_error.className = ''; cityInput.focus();}, 2000);
+    cityInput.parentElement.className = 'input-field error';
+    setTimeout(()=>{form_search_error.innerHTML = ''; form_search_error.className = ''; cityInput.focus(); cityInput.parentElement.className = 'input-field'}, 2000);
   }
   else if ( checkInInput.value === '') {
     form_search_error.innerHTML = 'Please Input Check In Date';
-    form_search_error.className = 'form-search-error'
-    setTimeout(()=>{form_search_error.innerHTML = ''; form_search_error.className = ''; checkInInput.focus();}, 2000);
+    form_search_error.className = 'form-search-error';
+    checkInInput.parentElement.className = 'input-field error';
+    setTimeout(()=>{form_search_error.innerHTML = ''; form_search_error.className = ''; checkInInput.focus(); checkInInput.parentElement.className = 'input-field';}, 2000);
   }
   else if ( checkOutInput.value === '') {
     form_search_error.innerHTML = 'Please Input Check Out Date';
-    form_search_error.className = 'form-search-error'
-    setTimeout(()=>{form_search_error.innerHTML = ''; form_search_error.className = ''; checkOutInput.focus();}, 2000);
+    form_search_error.className = 'form-search-error';
+    checkOutInput.parentElement.className = 'input-field error';
+    setTimeout(()=>{form_search_error.innerHTML = ''; form_search_error.className = ''; checkOutInput.focus(); checkOutInput.parentElement.className = 'input-field';}, 2000);
   }
   else if ( nationalityInput.value === '---') {
     form_search_error.innerHTML = 'Please Input Nationality';
-    form_search_error.className = 'form-search-error'
-    setTimeout(()=>{form_search_error.innerHTML = ''; form_search_error.className = '';  nationalityInput.focus();}, 2000);
+    form_search_error.className = 'form-search-error';
+    nationalityInput.parentElement.className = 'input-field error';
+    setTimeout(()=>{form_search_error.innerHTML = ''; form_search_error.className = '';  nationalityInput.focus(); nationalityInput.parentElement.className = 'input-field';}, 2000);
   }
   else if ( roomInput.value === '') {
     form_search_error.innerHTML = 'Please Input Number of Room';
-    form_search_error.className = 'form-search-error'
-    setTimeout(()=>{form_search_error.innerHTML = ''; form_search_error.className = ''; roomInput.focus();}, 2000);
+    form_search_error.className = 'form-search-error';
+    roomInput.parentElement.className = 'input-field error';
+    setTimeout(()=>{form_search_error.innerHTML = ''; form_search_error.className = ''; roomInput.focus(); roomInput.parentElement.className = 'input-field';}, 2000);
   }else {
 
     searchFormFunction();
@@ -634,6 +645,7 @@ function searchFormFunction(){
        },
       success : function (data) {
         Hotels = [];
+        HotelsToDisplay = [];
         let parser = new DOMParser();
         let xmlDoc = parser.parseFromString(data,"text/xml");
 
@@ -689,10 +701,12 @@ function searchFormFunction(){
 
 
             Hotels.push(dataToBePushed);
+            HotelsToDisplay.push(dataToBePushed);
            };// for loop 
 
 
             // Display Hotels
+          
           displayHotels();
 
           } // if hotels
@@ -722,9 +736,44 @@ function searchFormFunction(){
 
 
 
+function checkRatingStar(rateInputDigit) {
+  return new Promise((resolve, reject) => {
+      if(rateInputDigit === 0) { resolve('')}
+      if(rateInputDigit === 1) { resolve('OneStar')}
+      if(rateInputDigit === 2) { resolve('TwoStar')}
+      if(rateInputDigit === 3) { resolve('ThreeStar')}
+      if(rateInputDigit === 4) { resolve('FourStar')}
+      if(rateInputDigit === 5) { resolve('FiveStar')}
+  })
+}
 
 
-
+function applyHotelFilter() {
+  HotelsToDisplay = []
+  nameInputElement = document.querySelector('#filterHotelNameInput')
+  rateInputElement = document.querySelector('#filterRatingInput');
+  let nameInput = nameInputElement.value
+  
+  if (nameInput === '') {
+    HotelsToDisplay = HotelsToDisplay = Hotels;
+    checkRatingStar(Number(rateInputElement.value)).then((rateInput) => {
+      if (rateInput === '') { displayHotels(); }
+      if (rateInput !== '') {
+        HotelsToDisplay = HotelsToDisplay.filter((h) => String(h.HotelRating) === String(rateInput)).map(e => e);
+        displayHotels();
+      }
+    })
+  } else {
+    HotelsToDisplay = Hotels.filter(h => h.HotelName.toLowerCase().indexOf(nameInput.toLowerCase()) > -1).map(e => e);
+    checkRatingStar(Number(rateInputElement.value)).then((rateInput) => {
+      if (rateInput === '') { displayHotels(); }
+      if (rateInput !== '') {
+        HotelsToDisplay = HotelsToDisplay.filter((h) => String(h.HotelRating) === String(rateInput)).map(e => e);
+        displayHotels();
+      }
+    })
+  }
+}
 
 
 
@@ -732,7 +781,7 @@ function searchFormFunction(){
 
     sessionMonitor = setTimeout(()=>{ location.reload(true); }, 1800000) // session expires in 30 minutes, refresh page
 
-    if (Hotels.length === 0){
+    if (HotelsToDisplay.length === 0){
       hotelListCardGroup.innerHTML = '';
 
       let noHotelDiv = document.createElement('div');
@@ -750,7 +799,7 @@ function searchFormFunction(){
 
     hotelListCardGroup.innerHTML = '';
 
-    Hotels.forEach((hotel)=>{  
+    HotelsToDisplay.forEach((hotel)=>{  
 
         let card = document.createElement('div');
         card.className = 'card';
@@ -1833,6 +1882,8 @@ let proceedToBookingBtn = document.querySelector('#proceedToBooking');
             CancellationPolicy.push(myCancelPolicy);
 
             displayCancelationPolicy();
+              proceedToBookingBtn.setAttribute('style','');
+              proceedToBookingBtn.innerHTML = 'Proceed'
 
             proceedToBooking();
 

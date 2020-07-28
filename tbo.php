@@ -14,7 +14,7 @@
  */
 
 
-defined( 'ABSPATH') or die( 'Hey, you cant access this file, you silly Human !!');
+defined( 'ABSPATH') or die( 'Hey, you cannot access this file, you silly human !!');
 
 class TBOPlugin
 {

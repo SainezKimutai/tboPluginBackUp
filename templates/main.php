@@ -15,7 +15,7 @@ $is_one = false;
 </script>
 
 
-<!--Main rap-->
+
 <article class="main-body-article ">
 
 
@@ -25,119 +25,126 @@ $is_one = false;
     <div class="title-div text-center" >
         <h4>Hotel Booking</h4>
     </div>
-
-    <!-- <div id='testResponse' class="testResponse"></div> -->
-
-
 </section>
 
 
-<!--Hotel Search-->
-<section id="hotel_search_section" class="hotel-search-section">
 
-    <div class="title-div">
+
+<!--Hotel Search-->
+<section id="hotel_search_section" class="hotel-search-section-2">
+
+    <!-- <div class="title-div">
      Search for Hotel
-    </div>
+    </div> -->
 
     <div class="body-div">
         <form id="hotelSearchForm"  method="post" class="form">
 
+            <div class="form-wrapper">
+
             <div class="form-wrap-location">
                 <div class="form-group">
                     <div class="input-field autocomplete" >
-                        <input id="countryInput" type='text' class="" required/>
-                        <label for="countryInput">Country</label>
+                        <i class="fa fa-globe-africa"></i>
+                        <input id="countryInput" type='text' class=""  placeholder="Country"  required/>
+                  
                     </div>
                 </div>
 
                 <div class="form-group">
                     <div class="input-field autocomplete">
-                        <input id="cityInput" type='text' class="" required/>
-                        <label for="cityInput">City</label>
+                        <i class="fa fa-city"></i>
+                        <input id="cityInput" type='text' class="" placeholder="City"  required/>       
                     </div>
                 </div>
-            </div><!-- form-wrap-location -->
+            </div>
 
             <div  class="form-wrap-time" >
                 <div class="form-group">
                     <div class='input-field'>
-                        <input id="checkInInput" type="text" 
+                        <i class="fa fa-clock"></i>
+                        <input id="checkInInput" type="text" placeholder="Check In Date" 
                         data-language='en'
                         data-date-format="yyyy-mm-dd"
-                        class="datepicker-here" required/>
-                        <label for="checkInInput">Check In Date</label>                
-                    </div>
-
-                    <div id="nights" class="nights"></div>
-                 
+                        class="datepicker-here" required/>     
+                    </div>  
                 </div>
-
-
-                <div class="form-group">
-                    <div class='input-field'>
-               
-                        <input id="checkOutInput" type='text' class="datepicker-here validate" 
-                        data-language='en'
-                        data-date-format="yyyy-mm-dd"
-                        required
-                        />
-                        <label for="checkOutInput">Check Out Date</label>            
-                    </div>
-                </div>
-
-            </div><!-- form-wrap-time -->
-
-            <div  class="form-wrap-room" >
-
-              <div class="form-group">
-                    <div class="input-field" >
-                       
-                        <select id="nationalityInput" type='text' class="" required> </select>
-                        <label for="nationalityInput">Nationality</label> 
-                    </div>
-                </div>
-            
-                <div class="form-group">
-                    <div class='input-field'>
-                        
-                        <select id="roomInput" type="text"  class="" required>
-                          <option value=''>---</option>
-                          <option value="1" >1 Room</option>
-                          <option value="2">2 Rooms</option>
-                          <option value="3">3 Rooms</option>
-                          <option value="4">4 Rooms</option>
-                          <option value="5">5 Rooms</option>
-                          <option value="6">6 Rooms</option>
-                        </select>
-                        <label for="roomInput">Rooms</label> 
-                        
-                    </div>
-                </div>
-            
-            
-            </div> <!-- form-wrap-room -->
-
-
-            <div  class="form-wrap-guest" >
-
-            
-            </div><!-- form-wrap-guest -->
-
-            
-
-
-            <div class="btn-wrap">
-
-              <div id="form_search_error" class=""></div>
-
-                <button type="button" id="hotelSearchBtn" onClick="searchFormValidation()" class="btn">Search</button>
-            </div>
            
 
+                <div class="form-group">
+                    <div class='input-field'>
+                        <i class="fa fa-clock"></i>
+                        <input id="checkOutInput" type='text' class="datepicker-here validate" 
+                        data-language='en' placeholder="Check Out Date" 
+                        data-date-format="yyyy-mm-dd"
+                        required
+                        />        
+                    </div>
+                </div>
+
+            </div>
+            <div  class="form-wrap-room" >
+                <div class="form-wrap-room-wrapper border border-danger">
+                    <div class="form-group">
+                        <div class="input-field" >
+                            <i class="fa fa-flag"></i>
+                            <select id="nationalityInput" type='text' class="" placeholder="Nationality" required> </select>
+                        </div>
+                    </div>
+                
+                    <div class="form-group">
+                        <div class='input-field'>
+                            <i class="fa fa-bed"></i>
+                            <select id="roomInput" type="text" onClick="openGuestDropdown()" onChange="openFormRoomGuest()"  class="" required>
+                            <option value='' selected hidden disabled>Rooms</option>
+                            <option value="1">1 Room</option>
+                            <option value="2">2 Rooms</option>
+                            <option value="3">3 Rooms</option>
+                            <option value="4">4 Rooms</option>
+                            <option value="5">5 Rooms</option>
+                            <option value="6">6 Rooms</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+            <div class="dropdown-wrapper">
+            <div id="guest_dropdown" class="dropdown collapse">
+                <div class="close">
+                    <span onClick="closeGuestDropdown()">  
+                        <i class="fa fa-times"></i>
+                    </span>
+                </div>
+                <div id="form_wrap_guest" class="form-wrap-guest" style="margin: 0!important"></div>
+            </div>
+            </div>
         </form>
+
+        <div class="btn-wrap">
+                <button type="button" id="hotelSearchBtn" onClick="searchFormValidation()" class="btn">Search</button>
+        </div>
+
     </div>
 
+    <div id="form_search_error" class=""></div>
+
 </section> <!-- end of hotel-search-section -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -150,8 +157,35 @@ $is_one = false;
 <section id="hotel_list_section" class="hotel-list-section">
 
     <div id="hotel_list_head_wrap">
-        <button class="btn" onClick="toSearchPage()">Search</button>
+      
         <h4>Available Hotels</h4>
+    </div>
+
+    <div class="filter-search">
+        <h4 class="title">Filter Search</h4>
+        <div class="filter-modify-wrap">
+        <div class="filter-search-wrap mr-auto">
+            <div class="name-wrap d-flex">
+                <div class="name">
+                    Hotel Name 
+                </div>
+                <input id="filterHotelNameInput" type="text">
+            </div>
+            <div class="rate-wrap d-flex">
+                <div class="name">
+                    Rating 
+                </div>
+                <div class="rate-inner-wrap">
+                    <input name="filterRatingInput" class="slider-bar" id="filterRatingInput" type="range" min="0" value="0" max="5" step="1" list="ticks" oninput="ratingOutput.value = filterRatingInput.value" /><br />
+                    <output id="ratingOutput" class="output">0</output>
+                </div>
+            </div>
+            <div class="btn-wrap">
+                <button class="btn btn-sm" onClick="applyHotelFilter()">Apply</button>
+            </div>
+        </div>
+        <button class="btn ml-auto" onClick="toSearchPage()">Modify Search</buttons>
+        </div>
     </div>
 
     <div id="hotel_list_card_group" class="card-group">
@@ -167,9 +201,14 @@ $is_one = false;
 <section id="hotel_detail_section" class="hotel-detail-section">
 
     <div id="hotel_detail_head_wrap">
-        <button class="btn" onClick="toSearchPage()">Search</button>
-        <button class="btn" onClick="toHotelListPage()">Hotels List</button>
         <h4>Hotels Details</h4>
+    </div>
+
+    <div class="navigation">
+        <button class="btn"  onClick="toHotelListPage()"> <i class="fa fa-arrow-left"></i> Back</button>
+        <div class="nav-list">
+            Hotel Search / Hotel list / Hotel Details
+        </div>
     </div>
 
     <div id="hotel_detail_main_wrap" class="hotel-detail-main-wrap"></div>
@@ -222,9 +261,14 @@ $is_one = false;
   <div id="preview_div_wrap" class="preview-div-wrap">
 
     <div class="preview-head">
-        <button id="hotelSearchButton" class="btn" onClick="toSearchPage()">Search</button>
-        <button id="hotelListButton" class="btn" onClick="toHotelListPage()">Hotels List</button>
+
         <h4>Booking Preview</h4>
+    </div>
+    <div class="navigation">
+        <button class="btn"  onClick="toDetailsPage()"> <i class="fa fa-arrow-left"></i> Back</button>
+        <div class="nav-list">
+            Hotel Search / Hotel list / Hotel Details / Hotel Booking
+        </div>
     </div>
 
     <div class="preview-body">

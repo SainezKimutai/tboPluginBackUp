@@ -4,8 +4,12 @@ let mydropdown = document.getElementById('nationalityInput');
 mydropdown.length = 0;
 
 let myDefaultOption = document.createElement('option');
-myDefaultOption.text = '---';
-myDefaultOption.value = '---'
+myDefaultOption.text = 'Nationality';
+myDefaultOption.value = '---';
+myDefaultOption.className = "placeholder"
+myDefaultOption.selected = true;
+myDefaultOption.disabled = true;
+myDefaultOption.hidden = true;
 
 mydropdown.add(myDefaultOption);
 mydropdown.selectedIndex = 0;
